@@ -29,9 +29,9 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("My First App Bar")
-      // ),
+      appBar: AppBar(
+        title: const Text("Login")
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -48,30 +48,40 @@ class _LoginViewState extends State<LoginView> {
               decoration: const InputDecoration(hintText: "Password"),
             ),
             const SizedBox(height: 30),
-            ElevatedButton(
-                onPressed: () async {
-                  try {
-                    final userCredential = await FirebaseAuth.instance
-                        .signInWithEmailAndPassword(
-                            email: _email.text, password: _password.text);
-                    print(userCredential);
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == 'invalid-credential') {
-                      print('Invalid credential!!');
-                      return;
-                    }
-                    if (e.code == 'invalid-email') {
-                      print('Invalid email!!');
-                      return;
-                    }
-                    if (e.code == 'wrong-password') {
-                      print('Wrong password!!');
-                      return;
-                    }
-                    print(e.code);
-                  }
-                },
-                child: const Text("Login")),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        final userCredential = await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: _email.text, password: _password.text);
+                        print(userCredential);
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'invalid-credential') {
+                          print('Invalid credential!!');
+                          return;
+                        }
+                        if (e.code == 'invalid-email') {
+                          print('Invalid email!!');
+                          return;
+                        }
+                        if (e.code == 'wrong-password') {
+                          print('Wrong password!!');
+                          return;
+                        }
+                        print(e.code);
+                      }
+                    },
+                    child: const Text("Login")),
+                const SizedBox(width: 20.0),
+                ElevatedButton(onPressed: () {
+                  Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/register/', (route) => false);
+                }, child: const Text("Don't have an account? Register here"))
+              ],
+            ),
           ],
         ),
       ),
